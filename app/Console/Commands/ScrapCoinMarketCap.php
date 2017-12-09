@@ -85,12 +85,16 @@ class ScrapCoinMarketCapBasics extends Command
             //});
         }
         //Multi Dimensional Array
-        /*
         $multi = array();
         foreach ($coinArr as $key => $v) {
             $multi[] = [$coinArr[$key], $imgArr[$key], $urlArr[$key], $symbolArr[$key], $priceArr[$key]];
         }
         $json_data = json_encode($multi);
+        
+        //Write File to database
+        
+        
+        /*
         file_put_contents('data/myfile1.json', $json_data);
         */
     }
