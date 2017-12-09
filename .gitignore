@@ -21,3 +21,6 @@ Homestead.json
 
 # c9 folder
 .c9/
+
+# images
+public/images

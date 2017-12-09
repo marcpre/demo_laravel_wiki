@@ -1,25 +1,28 @@
 <?php
 
-use App\CryptoAsset;
+namespace App\Console\Commands;
+
 use App\Console\Commands;
+use App\CryptoAsset;
 use Goutte\Client;
 use Illuminate\Console\Command;
+use Intervention\Image\ImageManagerStatic as Image;
 
-class ScrapCoinMarketCapBasics extends Command
+class CoinMarketCapOverview extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'ScrapCoinMarketCapBasics:scrap';
+    protected $signature = 'cmc:run';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'CoinmarkeCapScrapper or Basic Things';
+    protected $description = 'Scrap CoinMarketCap';
 
     /**
      * Create a new command instance.
@@ -72,38 +75,34 @@ class ScrapCoinMarketCapBasics extends Command
             array_push($priceArr, $p[0]);
         });
         // get Links from Subpages
-        // foreach ($urlArr as $key => $v) {
-        for ($key = 0; $key < 2; $key++) {
+        foreach ($urlArr as $key => $v) {
+            // for ($key = 0; $key < 2; $key++) {
 
             $subCrawler = $client->request('GET', $urlArr[$key]);
-            $image = $subCrawler->filter($img)->extract(array('src')); //->each(function ($node) use (&$imgArr) {
+            $image = $subCrawler->filter($img)->extract(array('src'));
             print_r($image[0] . "\n");
-            //$link = $image[0]->link();
             $uri = $image[0];
             array_push($imgArr, $uri);
-            //});
         }
         //Multi Dimensional Array
-        // $multi = array();
-        // foreach ($coinArr as $key => $v) {
-        for ($key = 0; $key < 2; $key++) {
-            // $multi[] = [$coinArr[$key], $imgArr[$key], $urlArr[$key], $symbolArr[$key], $priceArr[$key]];
-            $cryptoAsset = new CryptoAsset();
+        foreach ($coinArr as $key => $v) {
+            // for ($key = 0; $key < 2; $key++) {
+            /*    $cryptoAsset = new CryptoAsset();
             $cryptoAsset->name = $coinArr[$key];
             $cryptoAsset->symbol = $symbolArr[$key];
             $cryptoAsset->current_price = $priceArr[$key];
-            
+             */
             ///save image to public folder
             $fileName = basename($imgArr[$key]);
-            Image::make($path)->save(public_path('images/' . $fileName));           
-            $cryptoAsset->asset_logo = $fileName;
-            $cryptoAsset->save();
+            Image::make($imgArr[$key])->save(public_path('images/' . $fileName));
+            //    $cryptoAsset->asset_logo = $fileName;
+            // $cryptoAsset->updateOrCreate();
+            CryptoAsset::updateOrCreate(
+                ['name' => $coinArr[$key]],
+                ['symbol' => $symbolArr[$key]],
+                ['current_price' => $priceArr[$key]],
+                ['asset_logo' => $fileName]
+            );
         }
-        // $json_data = json_encode($multi);
-
-        //Write File to database
-        /*
-    file_put_contents('data/myfile1.json', $json_data);
-     */
     }
 }
