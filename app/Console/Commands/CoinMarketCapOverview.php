@@ -76,33 +76,42 @@ class CoinMarketCapOverview extends Command
         });
         // get Links from Subpages
         foreach ($urlArr as $key => $v) {
-            // for ($key = 0; $key < 2; $key++) {
+        // for ($key = 0; $key < 100; $key++) {
+            try {
+                $subCrawler = $client->request('GET', $urlArr[$key]);
+                $image = $subCrawler->filter($img)->extract(array('src'));
+                $image[0] = isset($image[0]) ? $image[0] : ''; // No Error such as "Undefined offset: 0"
+                print_r($image[0] . "\n");
+                array_push($imgArr, $image[0]);
+            } catch (Exception $e) {
 
-            $subCrawler = $client->request('GET', $urlArr[$key]);
-            $image = $subCrawler->filter($img)->extract(array('src'));
-            print_r($image[0] . "\n");
-            $uri = $image[0];
-            array_push($imgArr, $uri);
+            }
         }
+        print_r($imgArr);
+        
         //Multi Dimensional Array
         foreach ($coinArr as $key => $v) {
-            // for ($key = 0; $key < 2; $key++) {
+        // for ($key = 0; $key < 100; $key++) {
             /*    $cryptoAsset = new CryptoAsset();
             $cryptoAsset->name = $coinArr[$key];
             $cryptoAsset->symbol = $symbolArr[$key];
             $cryptoAsset->current_price = $priceArr[$key];
              */
-            ///save image to public folder
-            $fileName = basename($imgArr[$key]);
-            Image::make($imgArr[$key])->save(public_path('images/' . $fileName));
-            //    $cryptoAsset->asset_logo = $fileName;
-            // $cryptoAsset->updateOrCreate();
-            CryptoAsset::updateOrCreate(
-                ['name' => $coinArr[$key]],
-                ['symbol' => $symbolArr[$key]],
-                ['current_price' => $priceArr[$key]],
-                ['asset_logo' => $fileName]
-            );
+            try {
+                ///save image to public folder
+                $fileName = basename($imgArr[$key]);
+                print_r($fileName . "\n");                
+                Image::make($imgArr[$key])->save(public_path('images/' . $fileName));
+                //    $cryptoAsset->asset_logo = $fileName;
+                // $cryptoAsset->updateOrCreate();
+                CryptoAsset::updateOrCreate(
+                    ['name' => $coinArr[$key],
+                    'symbol' => $symbolArr[$key],
+                    'current_price' => $priceArr[$key],
+                    'asset_logo' => $fileName]
+                );
+            } catch (Exception $e) { 
+            }
         }
     }
 }

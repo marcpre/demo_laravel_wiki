@@ -17,7 +17,7 @@ class CreateCryptoAssetsTable extends Migration
             $table->increments('id');
             $table->string('asset_logo');	            
             $table->string('name');
-            $table->string('symbol')->unique();
+            $table->string('symbol')->unique()->default('no_value');
             $table->decimal('current_price', 40, 9);	            
             $table->timestamps();
         });
