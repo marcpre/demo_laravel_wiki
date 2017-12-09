@@ -168,6 +168,7 @@ return [
          * Package Service Providers...
          */
         Weidner\Goutte\GoutteServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,        
 
         /*
          * Application Service Providers...
@@ -229,6 +230,7 @@ return [
 
         // Custom
         'Goutte' => Weidner\Goutte\GoutteFacade::class, 
+        'Image' => Intervention\Image\Facades\Image::class,        
         
     ],
 
