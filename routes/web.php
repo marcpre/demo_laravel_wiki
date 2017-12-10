@@ -11,6 +11,6 @@
 |
 */
 
-Route::resource('/', 'IndexController');
+Route::resource('/crypto', 'IndexController');
 
 Auth::routes();

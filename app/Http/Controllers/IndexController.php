@@ -47,7 +47,8 @@ class IndexController extends Controller
      */
     public function show($id)
     {
-        //
+        $cryptoAsset = CryptoAsset::find($id);        
+        return view('crypto.show')->with('cryptoAsset', $cryptoAsset);     
     }
 
     /**
@@ -58,7 +59,7 @@ class IndexController extends Controller
      */
     public function edit(CryptoAsset $cryptoAsset)
     {
-        return view('edit')->with('crypto', $cryptoAsset);        
+           
     }
 
     /**
