@@ -7,11 +7,24 @@
         <div class="panel-heading">Overview
         </div>
         <div class="panel-body">
-          @if (session('status'))
+        {{-- display success message --}}
+        @if (Session::has('success'))
           <div class="alert alert-success">
-            {{ session('status') }}
+            <strong>Success:</strong> {{ Session::get('success') }}
           </div>
-          @endif
+        @endif
+    
+        {{-- display error message --}}
+        @if (count($errors) > 0)
+          <div class="alert alert-danger">
+            <strong>Error:</strong>
+            <ul>
+              @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
         </div>
         {{-- Template Start --}}
                 <div class="container-fluid">

@@ -32,7 +32,8 @@
                                 <td>{{ $cryptos->id }}</td>
                                 <td>
                                 <img style="height: 16px; width: 16px;" src="{{ asset('images')}}/{{ $cryptos->asset_logo }}" />
-                                {{ $cryptos->name }}</td>
+                                <a href="{{ route('edit', ['cryptos'=>$cryptos ->id]) }}" >{{ $cryptos->name }}</a>
+                                </td>
                                 <td>{{ $cryptos->symbol }}</td>
                                 <td>{{ $cryptos->current_price }}</td>
                             </tr>
