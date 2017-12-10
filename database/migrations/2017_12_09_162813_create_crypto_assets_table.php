@@ -16,8 +16,8 @@ class CreateCryptoAssetsTable extends Migration
         Schema::create('crypto_assets', function (Blueprint $table) {
             $table->increments('id');
             $table->string('asset_logo');	            
-            $table->string('name');
-            $table->string('symbol')->unique()->default('no_value');
+            $table->string('name')->unique()->default('no_value');
+            $table->string('symbol');
             $table->decimal('current_price', 40, 9);	            
             $table->timestamps();
         });
